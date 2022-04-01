@@ -1,4 +1,4 @@
-# Image_Compressor
+# Image Compressor
 To use this command line tool, put the image you want to compress in the "Iutput" folder.
 
 In command line environment, go to the directory where this document is located.
