@@ -3,7 +3,7 @@ To use this command line tool, put the image you want to compress in the "Iutput
 
 In command line environment, go to the directory where this document is located.
 
-type in "python3 main.py", then follow the instruction of the program.
+Execute "python3 main.py", then follow the instruction of the program.
 
 The compressed image will be saved in "Output" folder
 
