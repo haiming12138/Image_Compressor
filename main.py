@@ -5,12 +5,13 @@ import math
 import numpy as np
 from numpy import linalg as lin
 from PIL import Image
-
+from os.path import exists
 
 BLOCK_SIZE = 8
 READ_PATH = "./Input/"
 SAVE_PATH = "./Output/"
-FORMAT = ".jpeg"
+JPEG = ".jpeg"
+JPG = ".jpg"
 
 Q_50 = np.array([[16, 11, 10, 16, 24, 40, 51, 61],
                  [12, 12, 14, 19, 26, 58, 60, 55],
@@ -39,7 +40,7 @@ def T_matrix():
 
 def read_image(file: str):
     # read a jpeg or jpg
-    im = Image.open(READ_PATH + file + FORMAT)
+    im = Image.open(READ_PATH + file)
 
     # convert to black and white
     im.draft(mode="L", size=im.size)
@@ -56,7 +57,7 @@ def create_image(matrix: np.array, name: str):
         for j in range(matrix.shape[1]):
             img.putpixel((i, j), int(matrix[i][j]))
 
-    img.save(SAVE_PATH + name + FORMAT)
+    img.save(SAVE_PATH + name + JPEG)
 
 
 def split_image(image: np.array, shape: tuple):
@@ -126,15 +127,31 @@ def process_block(block: np.array, t: np.array, t_inv: np.array, q: np.array):
 
 
 def compress(input_name, output_name, quality):
-    img = read_image(input_name)
-    blocks, shape = split_image(img, img.shape)
-    new_img = combine_image(process_image(blocks, int(quality)), shape)
-    create_image(new_img.transpose(), output_name)
+    try:
+        # File must be jpeg or jpg
+        if exists(READ_PATH + input_name + JPEG):
+            img = read_image(input_name + JPEG)
+        else:
+            img = read_image(input_name + JPG)
+
+        # Quality level must be 1 ~ 100
+        if int(quality) not in range(1, 101):
+            raise ValueError
+    except (FileNotFoundError, ValueError):
+        print()
+        print("—————————————————————————————————————————————————————————")
+        print("            Compress Failed: Improper Input              ")
+        print("—————————————————————————————————————————————————————————")
+        exit(1)
+    else:
+        blocks, shape = split_image(img, img.shape)
+        new_img = combine_image(process_image(blocks, int(quality)), shape)
+        create_image(new_img.transpose(), output_name)
 
 
 def main():
     print("—————————————————————————————————————————————————————————")
-    print("                 JPEG Compressor                         ")
+    print("               JPEG / JPG Compressor                     ")
     print("   1. Enter file names without format extension          ")
     print("   2. Enter an integer quality level between 1 ~ 100     ")
     print("—————————————————————————————————————————————————————————")
