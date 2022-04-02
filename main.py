@@ -3,9 +3,9 @@ sys.path.append(r"./Packages")
 
 import math
 import numpy as np
-from numpy import linalg as lin
 from PIL import Image
 from os.path import exists
+from numpy import linalg as lin
 
 BLOCK_SIZE = 8
 READ_PATH = "./Input/"
@@ -13,6 +13,7 @@ SAVE_PATH = "./Output/"
 JPEG = ".jpeg"
 JPG = ".jpg"
 
+# The standard compression matrix
 Q_50 = np.array([[16, 11, 10, 16, 24, 40, 51, 61],
                  [12, 12, 14, 19, 26, 58, 60, 55],
                  [14, 13, 16, 24, 40, 57, 69, 56],
